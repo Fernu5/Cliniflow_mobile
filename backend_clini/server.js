@@ -21,7 +21,7 @@ db.connect((err) => {
   console.log('Conectado ao banco de dados MySQL com sucesso!');
 });
 
-//-----------ROTAS GERAIS, ADMIN E PACIENTE----------
+//-----------ROTAS GERAIS ADMIN E PACIENTE----------
 
 app.get('/usuarios', (req, res) => {
   const sql = `
@@ -181,10 +181,58 @@ app.get('/consulta/:id', (req, res) => {
 
 app.patch('/consulta/:id/cancelar', (req, res) => {
   const { id } = req.params;
-  const sql = "UPDATE consultas SET status_consulta = 'Cancelada' WHERE id_consulta = ?";
-  db.query(sql, [id], (err, result) => {
-    if (err) return res.status(500).json({ erro: 'Erro' });
-    res.json({ mensagem: 'Cancelada' });
+
+  const sqlBuscaConsulta = "SELECT medico, data_hora_consulta_inicio, data_hora_consulta_fim FROM consultas WHERE id_consulta = ?";
+  
+  db.query(sqlBuscaConsulta, [id], (errBusca, resultsBusca) => {
+    if (errBusca || resultsBusca.length === 0) return res.status(500).json({ erro: 'Erro ao buscar consulta' });
+    
+    const consultaOriginal = resultsBusca[0];
+
+    // 2. Cancela a consulta atual do paciente desistente
+    const sqlCancela = "UPDATE consultas SET status_consulta = 'Cancelada' WHERE id_consulta = ?";
+    
+    db.query(sqlCancela, [id], (errCancela) => {
+      if (errCancela) return res.status(500).json({ erro: 'Erro ao cancelar' });
+
+      // 3. Verifica se tem alguém na lista de espera para ESTA consulta
+      const sqlBuscaFila = "SELECT id_lista_espera, paciente FROM listas_espera WHERE consulta = ? AND status_lista_espera = 'Ativa' ORDER BY id_lista_espera ASC LIMIT 1";
+      
+      db.query(sqlBuscaFila, [id], (errFila, resultsFila) => {
+        if (errFila) return res.status(500).json({ erro: 'Erro ao verificar fila' });
+
+        // Se não tem ninguém na fila, o processo termina aqui normalmente
+        if (resultsFila.length === 0) {
+          return res.json({ mensagem: 'Cancelada com sucesso.' });
+        }
+
+        // 4. Se TEM alguém na fila: Promove o primeiro paciente!
+        const pacientePromovido = resultsFila[0];
+
+        // 4.1 Cria uma NOVA consulta para o paciente promovido
+        const sqlNovaConsulta = "INSERT INTO consultas (paciente, medico, data_hora_consulta_inicio, data_hora_consulta_fim, status_consulta) VALUES (?, ?, ?, ?, 'Agendada')";
+        
+        db.query(sqlNovaConsulta, [pacientePromovido.paciente, consultaOriginal.medico, consultaOriginal.data_hora_consulta_inicio, consultaOriginal.data_hora_consulta_fim], (errNova, resultNova) => {
+          if (errNova) return res.status(500).json({ erro: 'Erro ao agendar paciente da fila' });
+
+          const idNovaConsulta = resultNova.insertId;
+
+          // 4.2 Remove o paciente promovido da lista de espera (Desativada)
+          const sqlTiraDaFila = "UPDATE listas_espera SET status_lista_espera = 'Desativada' WHERE id_lista_espera = ?";
+          db.query(sqlTiraDaFila, [pacientePromovido.id_lista_espera], (errTira) => {
+            if (errTira) console.error("Erro ao atualizar fila");
+
+            // 4.3 Transfere os pacientes restantes na fila para a NOVA consulta criada
+            const sqlTransfereFila = "UPDATE listas_espera SET consulta = ? WHERE consulta = ? AND status_lista_espera = 'Ativa'";
+            db.query(sqlTransfereFila, [idNovaConsulta, id], (errTransfere) => {
+              if (errTransfere) console.error("Erro ao transferir fila restante");
+              
+              res.json({ mensagem: 'Cancelada e próximo da fila assumiu a vaga!' });
+            });
+          });
+        });
+      });
+    });
   });
 });
 
@@ -504,7 +552,7 @@ app.post('/agendas', (req, res) => {
   });
 });
 
-//----------------- ROTAS EXCLUSIVAS PARA O MÉDICO--------------
+//-----------------ROTAS EXCLUSIVAS PARA MEDICO--------------
 
 app.patch('/consulta/:id/falta', (req, res) => {
   const sql = "UPDATE consultas SET status_consulta = 'Faltou' WHERE id_consulta = ?";
@@ -697,7 +745,7 @@ app.get('/medico/:idUsuario/agenda/dia', (req, res) => {
   });
 });
 
-//--------------------------testando-telagenda-------------------------------
+//--------------------------TESTANDO TELA LEGENDA-------------------------------
 
 app.get('/api/agenda-medico/:idUsuario/semana', (req, res) => {
   const idUsuario = req.params.idUsuario;
@@ -835,7 +883,7 @@ app.patch('/listas-espera/paciente/:idLista/remover', (req, res) => {
   });
 });
 
-//---------------ROTA DE NOTIFICAÇÕES DINÂMICAS DO PACIENTE-----------------
+//---------------ROTA DE NOTIFICAÇOES DINAMICAS DO PACIENTE-----------------
 app.get('/paciente/:idUsuario/notificacoes', (req, res) => {
   const idUsuario = req.params.idUsuario;
 
@@ -861,7 +909,7 @@ app.get('/paciente/:idUsuario/notificacoes', (req, res) => {
 
         if (canceladas && canceladas.length > 0) {
           canceladas.forEach(c => notificacoes.push({
-            id: `canc-${c.id_consulta}`, tipo: 'erro', titulo: 'Consulta Cancelada', desc: `Atenção: Sua consulta com ${c.medico} foi cancelada pelo profissional.`, tempo: 'Recente'
+            id: `canc-${c.id_consulta}`, tipo: 'erro', titulo: 'Consulta Cancelada', desc: `Atenção: Sua consulta com ${c.medico} foi cancelada.`, tempo: 'Recente'
           }));
         }
 
@@ -873,7 +921,7 @@ app.get('/paciente/:idUsuario/notificacoes', (req, res) => {
   });
 });
 
-//---------------ROTA DE NOTIFICAÇÕES DINÂMICAS DO MÉDICO-------------
+//---------------ROTA DE NOTIFICAÇOES DINAMICAS DO MEDICO-------------
 app.get('/medico/:idUsuario/notificacoes', (req, res) => {
   const idUsuario = req.params.idUsuario;
 
