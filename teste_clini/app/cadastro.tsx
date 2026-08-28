@@ -208,7 +208,6 @@ export default function CadastroScreen() {
             />
           </View>
 
-          {/* CAMPO DE CRM PADRONIZADO (SEM DESTAQUE VERDE) */}
           {tipoPerfil === 'Medico' && (
             <View style={styles.inputGroup}>
               <Text style={styles.label}>CRM</Text>

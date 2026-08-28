@@ -37,7 +37,6 @@ export default function AgendamentoScreen() {
     setDataCalendario(new Date(anoCalendario, mesCalendario + 1, 1));
   };
 
-  // 🔥 LÓGICA DE ALINHAMENTO MATEMÁTICO DO CALENDÁRIO
   const diasDoMes = useMemo(() => {
     const primeiroDiaDaSemana = new Date(anoCalendario, mesCalendario, 1).getDay();
     const totalDiasNoMes = new Date(anoCalendario, mesCalendario + 1, 0).getDate();
@@ -157,7 +156,6 @@ export default function AgendamentoScreen() {
 
       <ScrollView contentContainerStyle={styles.container}>
         
-        {/* PASSO 1: ESPECIALIDADE */}
         <View style={styles.fieldContainer}>
           <Text style={styles.fieldLabel}>Especialidade</Text>
           <TouchableOpacity 
@@ -192,7 +190,6 @@ export default function AgendamentoScreen() {
           )}
         </View>
 
-        {/* PASSO 2: MÉDICO */}
         <View style={[styles.fieldContainer, !especialidadeSelecionada && styles.disabledField]}>
           <Text style={styles.fieldLabel}>Médico</Text>
           <TouchableOpacity 
@@ -232,7 +229,6 @@ export default function AgendamentoScreen() {
           )}
         </View>
 
-        {/* PASSO 3: CALENDÁRIO COM SETINHAS CLICÁVEIS */}
         {medicoSelecionado && (
           <View style={styles.calendarSection}>
             <View style={styles.calendarHeader}>
@@ -305,7 +301,6 @@ export default function AgendamentoScreen() {
           </View>
         )}
 
-        {/* PASSO 4: HORÁRIOS */}
         {diaSelecionado && (
           <View style={styles.horariosSection}>
             <Text style={styles.horariosTitle}>Horários — Dia {diaSelecionado}</Text>
@@ -403,7 +398,6 @@ const styles = StyleSheet.create({
   calendarHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   monthTitle: { fontSize: 16, fontWeight: 'bold', color: '#2D3748' },
   
-  // 🔴 CORREÇÃO DO GRID DO CALENDÁRIO AQUI 👇
   weekDaysRow: { flexDirection: 'row', marginBottom: 8 },
   weekDayWrapper: { width: '14.28%', alignItems: 'center' },
   weekDayText: { fontSize: 12, color: '#A0AEC0', fontWeight: 'bold' },

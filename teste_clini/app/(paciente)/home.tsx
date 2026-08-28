@@ -153,7 +153,6 @@ export default function HomeScreen() {
                 ? `http://${IP}:3000/consulta/${consulta.id}/cancelar`
                 : `http://${IP}:3000/fila/${consulta.id}/sair`;
 
-              // 🔴 A MÁGICA ESTÁ AQUI: Identificamos o método HTTP correto para cada rota
               const metodoHttp = consulta.status === 'Agendada' ? 'PATCH' : 'PUT';
 
               const resposta = await fetch(endpoint, { method: metodoHttp });

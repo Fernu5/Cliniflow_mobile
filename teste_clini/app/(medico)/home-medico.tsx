@@ -242,7 +242,6 @@ export default function HomeMedicoScreen() {
               </View>
             </View>
 
-            {/* SESSÃO: SUA AGENDA (CALENDÁRIO GRADE BLINDADO) */}
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Sua Agenda</Text>
               
@@ -261,7 +260,6 @@ export default function HomeMedicoScreen() {
                   </TouchableOpacity>
                 </View>
 
-                {/* COLUNAS DOS DIAS DA SEMANA */}
                 <View style={styles.calendarWeekDays}>
                   {diasSemana.map((dia, idx) => (
                     <View key={`week-${idx}`} style={styles.weekDayWrapper}>
@@ -270,7 +268,6 @@ export default function HomeMedicoScreen() {
                   ))}
                 </View>
 
-                {/* GRADE DOS DIAS MATEMATICAMENTE ALINHADA */}
                 <View style={styles.calendarGrid}>
                   {diasDoMes.map((item, index) => {
                     if (item.vazio) {
@@ -382,7 +379,6 @@ export default function HomeMedicoScreen() {
         )}
       </ScrollView>
 
-      {/* BALÃO DE NOTIFICAÇÕES */}
       <Modal visible={mostrarNotificacoes} transparent={true} animationType="fade" onRequestClose={() => setMostrarNotificacoes(false)}>
         <TouchableWithoutFeedback onPress={() => setMostrarNotificacoes(false)}>
           <View style={styles.modalOverlay}>
@@ -461,7 +457,6 @@ const styles = StyleSheet.create({
   calendarArrow: { padding: 8 }, 
   calendarMonthText: { fontSize: 16, fontWeight: 'bold', color: '#2D3748' },
   
-  // 🔴 CORREÇÃO DO GRID DO CALENDÁRIO AQUI 👇
   calendarWeekDays: { flexDirection: 'row', marginBottom: 10 },
   weekDayWrapper: { width: '14.28%', alignItems: 'center' },
   weekDayText: { fontSize: 12, color: '#A0AEC0', fontWeight: 'bold' },

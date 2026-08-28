@@ -30,7 +30,6 @@ export default function HistoricoMedicoScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       
-      {/* CABEÇALHO */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.push('/home-medico')}>
           <Ionicons name="chevron-back" size={28} color="#12A388" />
@@ -41,7 +40,6 @@ export default function HistoricoMedicoScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* BARRA DE BUSCA */}
       <View style={styles.searchContainer}>
         <Text style={styles.searchLabel}>Buscar por nome:</Text>
         <View style={styles.searchInputWrapper}>
@@ -50,26 +48,23 @@ export default function HistoricoMedicoScreen() {
             style={styles.searchInput}
             placeholder="digite um nome..."
             value={busca}
-            onChangeText={setBusca} // Atualiza o estado e filtra a lista na hora
+            onChangeText={setBusca}
           />
         </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.listContainer}>
         
-        {/* CABEÇALHO "FANTASMA" PARA DAR A IDEIA DE TABELA */}
         <View style={styles.tableLegend}>
           <Text style={styles.legendText}>Paciente / Info</Text>
           <Text style={styles.legendText}>Status / Ação</Text>
         </View>
 
-        {/* LISTA FILTRADA DE ATENDIMENTOS */}
         {atendimentosFiltrados.length > 0 ? (
           atendimentosFiltrados.map((item) => (
             <View key={item.id} style={styles.card}>
               
               <View style={styles.cardRow}>
-                {/* LADO ESQUERDO: Nome e Especialidade */}
                 <View style={styles.infoLeft}>
                   <Text style={styles.pacienteNome}>{item.paciente}</Text>
                   <Text style={styles.especialidadeText}>{item.especialidade}</Text>
@@ -79,7 +74,6 @@ export default function HistoricoMedicoScreen() {
                   </View>
                 </View>
 
-                {/* LADO DIREITO: Status e Botão */}
                 <View style={styles.infoRight}>
                   <View style={[
                     styles.badge, 
@@ -93,7 +87,6 @@ export default function HistoricoMedicoScreen() {
                     </Text>
                   </View>
                   
-                  {/* O botão "Ver Relatório" pode ficar desabilitado se a consulta foi Cancelada */}
                   <TouchableOpacity 
                     style={[styles.relatorioButton, item.status === 'Cancelada' && styles.relatorioButtonDisabled]}
                     disabled={item.status === 'Cancelada'}
@@ -117,7 +110,6 @@ export default function HistoricoMedicoScreen() {
 
       </ScrollView>
 
-      {/* RODAPÉ FIXO: BOTÃO EXPORTAR */}
       <View style={styles.footer}>
         <TouchableOpacity style={styles.exportButton}>
           <Ionicons name="arrow-down-circle" size={20} color="#FFF" style={{ marginRight: 8 }} />
@@ -143,7 +135,7 @@ const styles = StyleSheet.create({
   searchIcon: { marginRight: 8 },
   searchInput: { flex: 1, paddingVertical: 10, fontSize: 14, color: '#2D3748' },
 
-  listContainer: { padding: 24, paddingBottom: 100 }, // Espaço para não esconder atrás do botão
+  listContainer: { padding: 24, paddingBottom: 100 },
   
   tableLegend: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8, paddingHorizontal: 4 },
   legendText: { fontSize: 12, color: '#A0AEC0', fontWeight: 'bold', textTransform: 'uppercase' },

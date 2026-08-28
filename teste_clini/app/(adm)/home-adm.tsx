@@ -156,7 +156,6 @@ export default function HomeAdmScreen() {
             <Ionicons name="chevron-forward" size={20} color="#CBD5E0" />
           </TouchableOpacity>
 
-          {/* NOVO CARD: AGENDAS MÉDICAS */}
           <TouchableOpacity 
             style={styles.actionButton}
             onPress={() => router.navigate('/gerenciar-agendas')}

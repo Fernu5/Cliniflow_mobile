@@ -78,7 +78,6 @@ export default function DetalhesConsultaAdmScreen() {
       ) : consulta ? (
         <ScrollView contentContainerStyle={styles.container}>
           
-          {/* STATUS E DATA */}
           <View style={styles.statusHeader}>
             <View style={[
               styles.badge,
@@ -99,7 +98,6 @@ export default function DetalhesConsultaAdmScreen() {
             <Text style={styles.hoursText}>{consulta.hora_inicio} às {consulta.hora_fim}</Text>
           </View>
 
-          {/* DADOS DO PACIENTE */}
           <View style={styles.infoCard}>
             <View style={styles.cardHeader}>
               <Ionicons name="person" size={20} color="#319795" style={{ marginRight: 8 }} />
@@ -110,7 +108,6 @@ export default function DetalhesConsultaAdmScreen() {
             <Text style={styles.infoSub}>CPF: {consulta.paciente_cpf}</Text>
           </View>
 
-          {/* DADOS DO MÉDICO */}
           <View style={styles.infoCard}>
             <View style={styles.cardHeader}>
               <Ionicons name="medkit" size={20} color="#805AD5" style={{ marginRight: 8 }} />
@@ -121,7 +118,6 @@ export default function DetalhesConsultaAdmScreen() {
             <Text style={styles.infoSub}>Especialidade: {consulta.especialidade}</Text>
           </View>
 
-          {/* BOTÃO DE CANCELAR (SÓ APARECE SE ESTIVER AGENDADA) */}
           {consulta.status === 'Agendada' && (
             <TouchableOpacity style={styles.btnDanger} onPress={handleCancelar}>
               <Ionicons name="close-circle" size={20} color="#E53E3E" style={{ marginRight: 8 }} />

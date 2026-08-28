@@ -124,7 +124,6 @@ export default function GerenciarAgendaScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       
-      {/* CABEÇALHO RESTAURADO COM O ROUTER.BACK() */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={28} color="#12A388" />

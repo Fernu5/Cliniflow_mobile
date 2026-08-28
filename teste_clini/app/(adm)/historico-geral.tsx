@@ -19,7 +19,6 @@ export default function HistoricoGeralScreen() {
   const [filtroAtivo, setFiltroAtivo] = useState('Todos');
   const filtros = ['Todos', 'Realizadas', 'Canceladas', 'Pendentes'];
 
-  // Estados para gerenciar os dados vindos do MySQL
   const [historicoConsultas, setHistoricoConsultas] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
 
@@ -39,7 +38,6 @@ export default function HistoricoGeralScreen() {
     buscarConsultas();
   }, []);
 
-  // Filtragem
   const consultasFiltradas = historicoConsultas.filter(consulta => {
     if (filtroAtivo === 'Todos') return true;
     return filtroAtivo.startsWith(consulta.status); 

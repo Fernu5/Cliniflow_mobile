@@ -11,12 +11,12 @@ import {
   StatusBar as RNStatusBar,
   ActivityIndicator
 } from 'react-native';
-import { useRouter, useFocusEffect, useLocalSearchParams } from 'expo-router'; // <-- Adicionado useLocalSearchParams
+import { useRouter, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function UsuariosAdmScreen() {
   const router = useRouter();
-  const { id } = useLocalSearchParams(); // <-- Pegando o ID do Adm logado
+  const { id } = useLocalSearchParams();
 
   const [busca, setBusca] = useState('');
   const [abaAtiva, setAbaAtiva] = useState('Todos'); 
@@ -25,7 +25,6 @@ export default function UsuariosAdmScreen() {
 
   const IP = '192.168.1.12';
 
-  // Garante que recarrega a lista se você acabou de voltar da tela de Cadastro
   useFocusEffect(
     useCallback(() => {
       const buscarUsuarios = async () => {
@@ -37,10 +36,8 @@ export default function UsuariosAdmScreen() {
 
           const dados = await resposta.json();
           
-          // Descobre qual é o ID em formato de número
           const idAdmin = id ? (Array.isArray(id) ? parseInt(id[0]) : parseInt(id as string)) : null;
           
-          // 🔴 A MÁGICA ESTÁ AQUI: Filtra tirando o ADM logado, depois formata as iniciais
           const dadosFormatados = dados
             .filter((user: any) => user.id !== idAdmin)
             .map((user: any) => {
@@ -79,7 +76,6 @@ export default function UsuariosAdmScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       
-      {/* CABEÇALHO */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={28} color="#12A388" />
@@ -94,7 +90,6 @@ export default function UsuariosAdmScreen() {
         </View>
       ) : (
         <>
-          {/* BOTÃO CADASTRAR NOVO (CIMA) */}
           <View style={styles.actionTopContainer}>
             <TouchableOpacity 
               style={styles.addButton}
@@ -105,7 +100,6 @@ export default function UsuariosAdmScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* BARRA DE BUSCA */}
           <View style={styles.searchContainer}>
             <View style={styles.searchInputWrapper}>
               <Ionicons name="search" size={20} color="#A0AEC0" style={styles.searchIcon} />
@@ -120,7 +114,6 @@ export default function UsuariosAdmScreen() {
             </View>
           </View>
 
-          {/* ABAS */}
           <View style={styles.tabsContainer}>
             {['Todos', 'Pacientes', 'Médicos'].map((aba) => (
               <TouchableOpacity 

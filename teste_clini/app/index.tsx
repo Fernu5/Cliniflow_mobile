@@ -63,7 +63,6 @@ export default function LoginScreen() {
     >
       <View style={styles.content}>
         
-        {/* LOGO */}
         <View style={styles.logoContainer}>
           <View style={styles.iconBox}>
             <Text style={styles.iconPlus}>+</Text>

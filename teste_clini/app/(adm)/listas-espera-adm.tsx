@@ -20,10 +20,8 @@ export default function ListasEsperaAdmScreen() {
   const [filas, setFilas] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
 
-  // 🔴 COLOQUE SEU IP AQUI
   const IP = '192.168.1.12';
 
-  // 🔥 A MÁGICA ACONTECE AQUI: useFocusEffect recarrega a tela sempre que você volta para ela
   useFocusEffect(
     useCallback(() => {
       const buscarFilas = async () => {
