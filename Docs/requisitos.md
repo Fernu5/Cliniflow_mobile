@@ -51,5 +51,5 @@ O **CliniFlow** é uma plataforma integrada de gestão clínica voltada para oti
 * **RN02 — Janela Mínima de Cancelamento:** O cancelamento autônomo por parte do paciente exige antecedência mínima de 24 horas em relação ao horário de início da consulta.
 * **RN03 — Prevenção de Auto-Enfileiramento:** Um paciente não pode ingressar na lista de espera de um horário em que ele próprio já é o titular da consulta agendada.
 * **RN04 — Prioridade na Fila de Espera (FIFO):** A promoção de pacientes da lista de espera para consultas segue rigorosamente a ordem cronológica de entrada.
-* **RN05 — Controle de Acesso:** Usuários marcados com status `Desativado` são impedidos de realizar login no sistema (`HTTP 403 Forbidden`).
+* **RN05 — Controle de Acesso:** Usuários marcados com status `Desativado` são impedidos de realizar login no sistema.
 * **RN06 — Conflito de Agendas:** Médicos não podem ter dois turnos cadastrados para o mesmo intervalo de horário na mesma data.
