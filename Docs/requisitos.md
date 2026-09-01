@@ -13,7 +13,7 @@ O **CliniFlow** é uma plataforma integrada de gestão clínica voltada para oti
 | **RF02** | O sistema deve validar a unicidade de CPF e E-mail no momento do cadastro, bloqueando duplicidades. | Autenticação |
 | **RF03** | O sistema deve autenticar usuários e redirecioná-los automaticamente para o painel correspondente (Paciente, Médico ou Administrador). | Autenticação |
 | **RF04** | O sistema deve permitir a seleção de consultas em cascata: Especialidade ➔ Médico ➔ Data ➔ Horário. | Paciente |
-| **RF05** | O sistema deve gerar slots de atendimento de 30 minutos baseados nos turnos cadastrados pelo médico. | Backend |
+| **RF05** | O sistema deve gerar slots de atendimento de 30 minutos baseados nos turnos do médico cadastrados pelo administrador. | Backend |
 | **RF06** | O sistema deve permitir que o paciente entre na Lista de Espera caso o horário desejado já esteja ocupado. | Paciente |
 | **RF07** | O sistema deve calcular em tempo real a posição numérica (`#1`, `#2`...) do paciente dentro da fila de espera. | Paciente / API |
 | **RF08** | O sistema deve promover automaticamente o primeiro paciente da lista de espera para o status `Agendada` quando uma consulta for cancelada. | Backend |
